@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<tool id="build_report" name="BuildReport" version="0.01">
+  <description>Complete antiSMASH report</description>
+  <requirements>
+    <requirement type="package" version="3.6">python</requirement>
+  </requirements>
+
+  <command detect_errors="exit_code"><![CDATA[
+  ## create report dir
+  mkdir -p "$html.files_path";
+
+  ## antiSMASH: copy geneclusters JSON file
+  cp "$antismash_geneclustersjson_report" "$html.files_path/geneclusters.json";
+
+  ## NaPDoS
+  mkdir -p "$html.files_path/napdos/svg";
+  ## copy napdos report & svg
+  cp "$napdos_table" "$html.files_path/napdos/napdos.tab";
+  #for $svg in $napdos_svg_collection:
+    cp "$svg" "$html.files_path/napdos/svg/$svg.element_identifier";
+  #end for
+
+  ## NRPSPredictor
+  mkdir -p "$html.files_path/nrpspredictor";
+  ## copy nrpspredictor report
+  cp "$nrps_predictor_table" "$html.files_path/nrpspredictor/nrpspredictor.tab";
+
+  ## CSS & JS & fonts & index.xml
+  cp -rf "$__tool_directory__/css/" "$html.files_path/";
+  cp -rf "$__tool_directory__/js/" "$html.files_path/";
+  cp -rf "$__tool_directory__/fonts/" "$html.files_path/";
+  cp "$__tool_directory__/index.html" "$html.files_path/";
+  cp "$__tool_directory__/index.html" "$html";
+  ## Build report
+  $__tool_directory__/build_report.py --report_dir "$html.files_path";
+
+  ]]></command>
+
+  <inputs>
+    <param name="antismash_geneclustersjson_report" format="json" type="data" label="antiSMASH JSON Report" />
+    <param name="nrps_predictor_table" format="tabular" type="data" label="NRPSPredictor Tabular Report" />
+    <param name="napdos_table" format="tabular" type="data" label="NaPDoS Tabular Report" />
+    <param name="napdos_svg_collection" type="data_collection" label="NaPDoS Tree(s)" />
+  </inputs>
+
+  <outputs>
+    <data name="html" format="html" label="${tool.name} Completed HTML report ${on_string}" />
+  </outputs>
+
+  <tests>
+    <!-- <test> -->
+    <!--   <param name="biosynml" value="biosynML.xml" ftype="xml" /> -->
+    <!--   <output name="a_fasta" file="a_domains.fa" compare="diff"/> -->
+    <!--   <output name="ce_fasta" file="ce_domains.fa" compare="diff"/> -->
+    <!-- </test> -->
+  </tests>
+
+  <help><![CDATA[
+  This tool will produce a report for data coming from antiSMASH, NaPDoS and NRPSPredictor2.
+  ]]></help>
+  <citations>
+  </citations>
+
+</tool>

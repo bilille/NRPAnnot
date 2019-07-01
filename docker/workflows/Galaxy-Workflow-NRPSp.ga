@@ -1,0 +1,238 @@
+{
+    "a_galaxy_workflow": "true", 
+    "annotation": "NRPS annotation workflow -- proteic", 
+    "format-version": "0.1", 
+    "name": "NRPSp", 
+    "steps": {
+        "0": {
+            "annotation": "", 
+            "content_id": "antismash", 
+            "errors": null, 
+            "id": 0, 
+            "input_connections": {}, 
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool antiSMASH", 
+                    "name": "input_type"
+                }
+            ], 
+            "label": null, 
+            "name": "antiSMASH", 
+            "outputs": [
+                {
+                    "name": "html", 
+                    "type": "html"
+                }, 
+                {
+                    "name": "json", 
+                    "type": "json"
+                }, 
+                {
+                    "name": "nrpspredictor", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 205.76666259765625, 
+                "top": 213.98333740234375
+            }, 
+            "post_job_actions": {
+                "HideDatasetActionjson": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "json"
+                }, 
+                "HideDatasetActionnrpspredictor": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "nrpspredictor"
+                }
+            }, 
+            "tool_id": "antismash", 
+            "tool_state": "{\"__page__\": null, \"input_type\": \"{\\\"type_selector\\\": \\\"prot\\\", \\\"additional_annotations\\\": {\\\"active_site_finder\\\": \\\"true\\\", \\\"smcogs\\\": \\\"true\\\"}, \\\"seqfile\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"__current_case__\\\": 0}\", \"__rerun_remap_job_id__\": null, \"run_id\": \"\\\"My antiSMASH run ID\\\"\"}", 
+            "tool_version": "3.0.5", 
+            "type": "tool", 
+            "uuid": "b5a0ed00-3fe4-44d2-b8da-90dff2b7afcc", 
+            "workflow_outputs": [
+                {
+                    "label": null, 
+                    "output_name": "html", 
+                    "uuid": "e1f36100-96de-4cb3-b5cd-2a30201d4c58"
+                }
+            ]
+        }, 
+        "1": {
+            "annotation": "", 
+            "content_id": "extract_domains", 
+            "errors": null, 
+            "id": 1, 
+            "input_connections": {
+                "antismash_geneclusters_json": {
+                    "id": 0, 
+                    "output_name": "json"
+                }
+            }, 
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool ExtractNRPSDomains", 
+                    "name": "antismash_geneclusters_json"
+                }
+            ], 
+            "label": null, 
+            "name": "ExtractNRPSDomains", 
+            "outputs": [
+                {
+                    "name": "a_fasta", 
+                    "type": "fasta"
+                }, 
+                {
+                    "name": "ce_fasta", 
+                    "type": "fasta"
+                }
+            ], 
+            "position": {
+                "left": 444.5333251953125, 
+                "top": 353.98333740234375
+            }, 
+            "post_job_actions": {}, 
+            "tool_id": "extract_domains", 
+            "tool_state": "{\"__page__\": null, \"__rerun_remap_job_id__\": null, \"antismash_geneclusters_json\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\"}", 
+            "tool_version": "0.01", 
+            "type": "tool", 
+            "uuid": "6a75f372-09f4-4419-baf5-8a723f3f07d9", 
+            "workflow_outputs": [
+                {
+                    "label": null, 
+                    "output_name": "ce_fasta", 
+                    "uuid": "14f480f1-cf0a-468d-8c57-1f5083091511"
+                }, 
+                {
+                    "label": null, 
+                    "output_name": "a_fasta", 
+                    "uuid": "0b92104c-4bca-4360-978c-a188e56d87d4"
+                }
+            ]
+        }, 
+        "2": {
+            "annotation": "", 
+            "content_id": "napdos", 
+            "errors": null, 
+            "id": 2, 
+            "input_connections": {
+                "fasta": {
+                    "id": 1, 
+                    "output_name": "ce_fasta"
+                }
+            }, 
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool NaPDoS", 
+                    "name": "fasta"
+                }
+            ], 
+            "label": null, 
+            "name": "NaPDoS", 
+            "outputs": [
+                {
+                    "name": "tree(s)", 
+                    "type": "input"
+                }, 
+                {
+                    "name": "table", 
+                    "type": "tabular"
+                }
+            ], 
+            "position": {
+                "left": 743.3333129882812, 
+                "top": 360.75
+            }, 
+            "post_job_actions": {
+                "HideDatasetActiontable": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "table"
+                }, 
+                "HideDatasetActiontree(s)": {
+                    "action_arguments": {}, 
+                    "action_type": "HideDatasetAction", 
+                    "output_name": "tree(s)"
+                }
+            }, 
+            "tool_id": "napdos", 
+            "tool_state": "{\"__page__\": null, \"query_type\": \"{\\\"query_type_selector\\\": \\\"aa\\\"}\", \"__rerun_remap_job_id__\": null, \"domain_type\": \"{\\\"domain_type_selector\\\": \\\"C\\\"}\", \"advanced_params\": \"{\\\"pathway_assignment\\\": {\\\"max_db_hits_per_domain\\\": \\\"3\\\", \\\"blastp_evalue_cutoff\\\": \\\"1e-5\\\"}, \\\"ks_domain_detection\\\": {\\\"ks_minimum_match_length\\\": \\\"200\\\", \\\"ks_hmm_evalue_cutoff\\\": \\\"1e-5\\\"}, \\\"c_domain_detection\\\": {\\\"c_hmm_evalue_cutoff\\\": \\\"1e-5\\\", \\\"c_minimum_match_length\\\": \\\"200\\\"}}\", \"fasta\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\"}", 
+            "tool_version": "0.01", 
+            "type": "tool", 
+            "uuid": "8c99f765-42ad-48d3-a570-bcdb8a80da7b", 
+            "workflow_outputs": []
+        }, 
+        "3": {
+            "annotation": "", 
+            "content_id": "build_report", 
+            "errors": null, 
+            "id": 3, 
+            "input_connections": {
+                "antismash_geneclustersjson_report": {
+                    "id": 0, 
+                    "output_name": "json"
+                }, 
+                "napdos_svg_collection": {
+                    "id": 2, 
+                    "output_name": "tree(s)"
+                }, 
+                "napdos_table": {
+                    "id": 2, 
+                    "output_name": "table"
+                }, 
+                "nrps_predictor_table": {
+                    "id": 0, 
+                    "output_name": "nrpspredictor"
+                }
+            }, 
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool BuildReport", 
+                    "name": "napdos_table"
+                }, 
+                {
+                    "description": "runtime parameter for tool BuildReport", 
+                    "name": "napdos_svg_collection"
+                }, 
+                {
+                    "description": "runtime parameter for tool BuildReport", 
+                    "name": "antismash_geneclustersjson_report"
+                }, 
+                {
+                    "description": "runtime parameter for tool BuildReport", 
+                    "name": "nrps_predictor_table"
+                }
+            ], 
+            "label": null, 
+            "name": "BuildReport", 
+            "outputs": [
+                {
+                    "name": "html", 
+                    "type": "html"
+                }
+            ], 
+            "position": {
+                "left": 980.0999755859375, 
+                "top": 213.98333740234375
+            }, 
+            "post_job_actions": {}, 
+            "tool_id": "build_report", 
+            "tool_state": "{\"__page__\": null, \"__rerun_remap_job_id__\": null, \"napdos_svg_collection\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"antismash_geneclustersjson_report\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"nrps_predictor_table\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"napdos_table\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\"}", 
+            "tool_version": "0.01", 
+            "type": "tool", 
+            "uuid": "bba58c55-281a-4420-85c8-997eb008815e", 
+            "workflow_outputs": [
+                {
+                    "label": null, 
+                    "output_name": "html", 
+                    "uuid": "06b576d8-60c9-4374-b632-4233fde0d95b"
+                }
+            ]
+        }
+    }, 
+    "tags": [], 
+    "uuid": "83a71d3c-5354-47fa-89c1-da5d054dbccc"
+}

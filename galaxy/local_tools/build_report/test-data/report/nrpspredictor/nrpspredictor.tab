@@ -1,0 +1,33 @@
+#sequence-id<tab>8A-signature<tab>stachelhaus-code<tab>3class-pred<tab>large-class-pred<tab>small-class-pred<tab>single-class-pred<tab>nearest stachelhaus code<tab>NRPS1pred-large-class-pred<tab>NRPS2pred-large-class-pred<tab>outside applicability domain?<tab>coords<tab>pfam-score
+cluster-32_ctg9-96_1_from-geneclusters_m1	FSMTFDISGLELQALVGGETNLYGPTETTIWSAA	DILQLGLIW-	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	gly,ala	gly	gly	gly=ala=val=leu=ile=abu=iva	gly=ala	0	137:276	1.466000e+02
+cluster-32_ctg9-96_4_from-geneclusters_m1	LSTHFDFSVWEGNQIFGGEVNMYGITETTVHVSY	DFWNIGMVH-	hydrophobic-aliphatic	ser,thr,dhpg,hpg	thr	thr	thr	ser=thr=ser-thr=dht=dhpg=dpg=hpg	thr=dht	0	141:290	1.963000e+02
+cluster-32_ctg9-98_0_from-geneclusters_m1	SLSLYPLSSPGGALQVGGAQQVFGMAEGLVNYTR	PLPAQGVVN-	hydrophobic-aromatic	dhb,sal	dhb,sal	dhb	dhb	dhb=sal	dhb=sal	0	147:290	1.422000e+02
+cluster-24_ctg8-1_1_from-geneclusters_m1	FGMSFDASIWQWHFFAGGEIHGYGPTEATVDAAF	DAWHFGGVD-	hydrophilic	asp,asn,glu,gln,aad	glu,gln	glu	glu	asp=asn=glu=gln=aad	glu=gln	0	130:280	1.658000e+02
+cluster-23_ctg7-1_2_from-geneclusters_m1	FGMSFDASIWQWHFFAGGEIHGYGPTEATVDAAF	DAWHFGGVD-	hydrophilic	asp,asn,glu,gln,aad	glu,gln	glu	glu	asp=asn=glu=gln=aad	glu=gln	0	130:280	1.666000e+02
+cluster-23_ctg7-2_2_from-geneclusters_m1	TWRFFDGSLTSTLITFAGELNEYGPTENSVATTI	DGTLTAEVA-	hydrophobic-aromatic	phe,trp,phg,tyr,bht	tyr,bht	tyr	tyr	phe=trp=phg=tyr=bht	tyr=bht	0	130:273	1.761000e+02
+cluster-23_ctg7-2_5_from-geneclusters_m1	LHKHFDFSVWEGNQIFGGEVNMYGITETTVHVTC	DFWNIGMVH-	hydrophobic-aliphatic	ser,thr,dhpg,hpg	thr	thr	thr	ser=thr=ser-thr=dht=dhpg=dpg=hpg	thr=dht	0	128:272	1.957000e+02
+cluster-23_ctg7-3_0_from-geneclusters_m1	AAWAFDVFSGDRESVLGSDINSYGVTEATIDSSY	DVGEVGSID-	hydrophilic	orn,lys,arg	orn,horn	orn	orn	orn=lys=arg	orn	0	134:281	1.625000e+02
+cluster-22_ctg6-938_0_from-geneclusters_m1	YWASFDLTITSTKLIVGGDFNEYGPTETVVGCMI	DLTKIGEVG-	hydrophilic	asp,asn,glu,gln,aad	asp,asn	asn	asn	asp=asn=glu=gln=aad	asp=asn	0	130:271	1.182000e+02
+cluster-22_ctg6-938_4_from-geneclusters_m1	RWMTFDVSVWEWHFFASGEINLYGPTEATIDVSY	DVWHFSLID-	hydrophobic-aliphatic	ser,thr,dhpg,hpg	ser	ser	ser	ser=thr=ser-thr=dht=dhpg=dpg=hpg	ser	0	130:283	1.870000e+02
+cluster-22_ctg6-939_0_from-geneclusters_m1	SWKYFDAFILNGSTVVGGENNEYGPTENSVVSTF	DALSVGEVV-	hydrophobic-aromatic	phe,trp,phg,tyr,bht	tyr,bht	tyr	tyr	phe=trp=phg=tyr=bht	tyr=bht	0	130:273	1.548000e+02
+cluster-22_ctg6-939_4_from-geneclusters_m1	YWASFDLTVTSTKLIVGGECNEYGPTETVVGCMI	DLTKIGEVG-	hydrophilic	asp,asn,glu,gln,aad	asp,asn	asn	asn	asp=asn=glu=gln=aad	asp=asn	0	130:271	1.282000e+02
+cluster-22_ctg6-939_8_from-geneclusters_m1	LGLAFDASVQQADGLIGGETNVYGPTETCVDASL	DAQDLGVVD-	hydrophilic	asp,asn,glu,gln,aad	glu,gln	gln	gln	asp=asn=glu=gln=aad	glu=gln	0	130:278	1.707000e+02
+cluster-22_ctg6-939_11_from-geneclusters_m1	LYEAFDVCYQESFLIAAGEHNHYGPSETHVVTMY	DVQFIAHVV-	hydrophobic-aliphatic	pro,pip	pro	pro	pro	pro=pip	pro	0	130:274	1.379000e+02
+cluster-22_ctg6-940_8_from-geneclusters_m1	YWASFDLTVTSTKLIVGGEFNEYGPTEAVVGCMI	DLTKIGEVG-	hydrophilic	asp,asn,glu,gln,aad	asp,asn	asn	asn	asp=asn=glu=gln=aad	asp=asn	0	130:271	1.244000e+02
+cluster-22_ctg6-960_0_from-geneclusters_m1	NNIVF-GCVLGAHGIMAGSTIAYGQTEASPVITQ	-GLHIAAPV-	N/A	asp,asn,glu,gln,aad	N/A	N/A	phe	N/A	phe=trp	0	171:314	4.170000e+01
+cluster-22_ctg6-964_2_from-geneclusters_m1	LNSGFDAVTFEGFLYVGGEYNIYGPTENTTFSTF	DAFFYGITF-	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	ile	ile	gly=ala=val=leu=ile=abu=iva	val=leu=ile=abu=iva	0	130:271	1.962000e+02
+cluster-22_ctg6-965_2_from-geneclusters_m1	LDQAFDVCYQESFFITAGEHNHYGPSETHVVSTY	DVQFIAHVV-	hydrophobic-aliphatic	pro,pip	pro	pro	pro	pro=pip	pro	0	129:274	1.582000e+02
+cluster-22_ctg6-965_5_from-geneclusters_m1	FSLTFDASIWEWHFFAGGETNSYGPTEATVEAAY	DAWHFGSVE-	hydrophilic	asp,asn,glu,gln,aad	glu,gln	glu	glu	asp=asn=glu=gln=aad	glu=gln	0	131:278	1.922000e+02
+cluster-22_ctg6-965_8_from-geneclusters_m1	TWRFFDGFVTSTIITLAGEANEYGPTENSVATTA	DGTITAEVA-	hydrophobic-aromatic	phe,trp,phg,tyr,bht	tyr,bht	tyr	tyr	phe=trp=phg=tyr=bht	tyr=bht	0	130:273	1.684000e+02
+cluster-22_ctg6-966_0_from-geneclusters_m1	LNSSFDVTTFEGWLIIGGEWNGYGPTENTTFSTC	DVFWIGGTF-	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	val	val	gly=ala=val=leu=ile=abu=iva	val=leu=ile=abu=iva	0	130:271	2.085000e+02
+cluster-21_ctg6-829_0_from-geneclusters_m1	MGNMFDLHLRDLWALNGGERPAWGMSETSSGVIF	DLRWLGASG-	hydrophobic-aliphatic	N/A	N/A	N/A	alpha-hydroxy-isocaproic acid	N/A	val=leu=ile=abu=iva	1	143:298	-1.730000e+01
+cluster-21_ctg6-829_3_from-geneclusters_m1	FSMTFDIAALELQALCGGEWNMFGPTETTIWSAV	DILQLGMIW-	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	gly,ala	gly	gly	gly=ala=val=leu=ile=abu=iva	gly=ala	0	135:274	1.228000e+02
+cluster-21_ctg6-832_1_from-geneclusters_m1	TFLTFDVSISEGNFMVAGEENIYGPTETSIYAAY	DVSNMAIIY-	hydrophobic-aliphatic	N/A	N/A	N/A	ala	pro=pip	N/A	0	133:280	1.626000e+02
+cluster-29_ctg8-345_0_from-geneclusters_m1	ALLLHIGGINTAPATYGTEKQTYGLTELGIFSTK	IGNPTGTIF-	hydrophobic-aliphatic	N/A	N/A	N/A	leu	N/A	val=leu=ile=abu=iva	1	121:257	1.990000e+01
+cluster-1_ctg4-147_1_from-geneclusters_m1	LSLAFDASVKQADGLIGGETNVYGPTETCVDASV	DAKDLGVVD-	hydrophilic	asp,asn,glu,gln,aad	glu,gln	gln	glu	asp=asn=glu=gln=aad	glu=gln	0	127:275	1.805000e+02
+cluster-1_ctg4-147_4_from-geneclusters_m1	TNTSFDAFMFDGMIMFGGELHMYGPSESTVFATY	DAFMMGMVF-	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	leu	leu	gly=ala=val=leu=ile=abu=iva	val=leu=ile=abu=iva	0	132:273	1.953000e+02
+cluster-1_ctg4-147_7_from-geneclusters_m1	LWHAFDASIWEPFLLVGGDVNNYGPTENTVVATS	DAWFLGNVV-	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	leu	leu	gly=ala=val=leu=ile=abu=iva	val=leu=ile=abu=iva	0	136:268	1.714000e+02
+cluster-1_ctg4-148_2_from-geneclusters_m1	LHSGFDAGTFEGWLIIGGDWNGYGPTENTTFSTS	DAFWIGGTF-	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	val	val	gly=ala=val=leu=ile=abu=iva	val=leu=ile=abu=iva	0	131:272	2.029000e+02
+cluster-1_ctg4-148_5_from-geneclusters_m1	YWFSFDLGYTAPKLVLGGEINHYGPTETTIGAIA	DLTKVGHIG-	hydrophilic	asp,asn,glu,gln,aad	asp,asn	asp	asp	asp=asn=glu=gln=aad	asp=asn	0	131:277	1.871000e+02
+cluster-1_ctg4-148_8_from-geneclusters_m1	LWHAFDASIWEPFLLVGGDVNNYGPTENTVVATS	DAWFLGNVV-	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	leu	leu	gly=ala=val=leu=ile=abu=iva	val=leu=ile=abu=iva	0	136:268	1.714000e+02
+cluster-1_ctg4-149_2_from-geneclusters_m1	LHVSFDAFTFDAFALFGGEINCYGPTEGTVFATA	DAFFLGCVF-	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	leu	leu	gly=ala=val=leu=ile=abu=iva	val=leu=ile=abu=iva	0	133:274	1.837000e+02

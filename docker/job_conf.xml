@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<job_conf>
+  <plugins>
+    <plugin id="local" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner" workers="4"/>
+  </plugins>
+  <!--
+      https://biostar.usegalaxy.org/p/27746/
+      <handlers>
+      <handler id="main"/>
+      </handlers>
+  -->
+  <destinations default="local">
+    <destination id="local" runner="local">
+      <param id="local_slots">4</param>
+    </destination>
+
+    <destination id="sensitive_antismash" runner="local">
+      <param id="local_slots">4</param>
+    </destination>
+
+    <destination id="sensitive_napdos" runner="local">
+      <param id="local_slots">4</param>
+    </destination>
+
+    <destination id="sensitive_ncbi" runner="local">
+      <param id="local_slots">4</param>
+    </destination>
+
+    <!-- LIMIT THE NUMBER OF CONCURRENT JOBS FOR SENSITIVE TOOLS (DOCKER & HTTP REQUESTS) -->
+    <destination id="sensitive" runner="local">
+      <param id="local_slots">4</param>
+    </destination>
+  </destinations>
+
+    <limits>
+      <limit type="destination_total_concurrent_jobs" id="sensitive_antismash">1</limit>
+      <limit type="destination_total_concurrent_jobs" id="sensitive_napdos">1</limit>
+      <limit type="destination_total_concurrent_jobs" id="sensitive_ncbi">1</limit>
+    </limits>
+
+    <tools>
+      <tool id="antismash" destination="sensitive_antismash" />
+      <tool id="napdos" destination="sensitive_napdos" />
+      <tool id="fetch_from_ncbi" destination="sensitive_ncbi" />
+    </tools>
+
+
+</job_conf>

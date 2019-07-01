@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<tool id="napdos" name="NaPDoS" version="0.01">
+  <description>Natural Product Domain Seeker</description>
+  <requirements>
+    <requirement type="package" version="4.6.0">beautifulsoup4</requirement>
+    <requirement type="package" version="2.18.4">requests</requirement>
+  </requirements>
+  <!-- <command interpreter="bash" detect_errors="exit_code"><![CDATA[ -->
+
+  <command detect_errors="exit_code"><![CDATA[
+  python3 $__tool_directory__/napdos.py --fasta "$fasta" --output_dir napdos
+  --domain_type $domain_type.domain_type_selector
+  --query_type $query_type.query_type_selector
+  --ks_hmm_evalue $advanced_params.ks_domain_detection.ks_hmm_evalue_cutoff
+  --ks_min_matchlength $advanced_params.ks_domain_detection.ks_minimum_match_length
+  --c_hmm_evalue $advanced_params.c_domain_detection.c_hmm_evalue_cutoff
+  --c_min_matchlength $advanced_params.c_domain_detection.c_minimum_match_length
+  --path_blast_evalue $advanced_params.pathway_assignment.blastp_evalue_cutoff
+  --max_hits $advanced_params.pathway_assignment.max_db_hits_per_domain
+  ]]></command>
+  <inputs>
+    <section name="domain_type" title="Domain type" expanded="True">
+      <param name="domain_type_selector" type="select" label="Choose the domain type">
+	<option value="C" selected="True">C domains</option>
+	<option value="KS">KS domains</option>
+      </param>
+    </section>
+
+    <section name="query_type" title="Query type" expanded="True">
+      <param name="query_type_selector" type="select" label="Choose the query type">
+	<option value="aa" selected="True">Predicted protein sequences (amino acid)</option>
+	<option value="cds">Predicted coding sequences or PCR products (DNA)</option>
+	<option value="genome">Genome or metagenome contigs (DNA)</option>
+
+      </param>
+    </section>
+
+    <param name="fasta" format="fasta" type="data" label="Query sequence" help='Please avoid using sequence id numbers containing non-standard characters (e.g. commas, slashes, colons, parentheses, ampersands, etc), as well as ambiguity codes "R" and "Y" for nucleic acid sequence files.'/>
+
+    <section name="advanced_params" title="Advances Settings" expanded="False">
+      <section name="ks_domain_detection" title="KS domain detection" expanded="True">
+	<param name="ks_hmm_evalue_cutoff" type="select" label="HMM e-value cutoff">
+	  <option value="1e-5" selected="True">1e-5</option>
+	  <option value="1e-3">1e-3</option>
+	  <option value="1e-1">0.1</option>
+	  <option value="1">1</option>
+	  <option value="10">10</option>
+	  <option value="1e-50">1e-50</option>
+	</param>
+	<param name="ks_minimum_match_length" type="select" label="minimum match length">
+	  <option value="200" selected="True">200</option>
+	  <option value="150">150</option>
+	  <option value="100">100</option>
+	</param>
+      </section>
+
+      <section name="c_domain_detection" title="C domain detection" expanded="True">
+	<param name="c_hmm_evalue_cutoff" type="select" label="HMM e-value cutoff">
+	  <option value="1e-5" selected="True">1e-5</option>
+	  <option value="1e-3">1e-3</option>
+	  <option value="1e-1">0.1</option>
+	  <option value="1">1</option>
+	  <option value="10">10</option>
+	  <option value="1e-50">1e-50</option>
+	</param>
+	<param name="c_minimum_match_length" type="select" label="minimum match length">
+	  <option value="200" selected="True">200</option>
+	  <option value="400">400</option>
+	  <option value="300">300</option>
+	  <option value="100">100</option>
+	</param>
+      </section>
+
+      <section name="pathway_assignment" title="Pathway assignment" expanded="True">
+	<param name="blastp_evalue_cutoff" type="select" label="BLASTP e-value cutoff">
+	  <option value="1e-5" selected="True">1e-5</option>
+	  <option value="1e-20">1e-20</option>
+	  <option value="1e-10">1e-10</option>
+	  <option value="1e-1">0.1</option>
+	  <option value="1">1</option>
+	</param>
+	<param name="max_db_hits_per_domain" type="select" label="max db hits per domain">
+	  <option value="1" selected="True">1</option>
+	  <option value="3">3</option>
+	  <option value="5">5</option>
+	  <option value="10">10</option>
+	</param>
+      </section>
+    </section>
+  </inputs>
+
+
+  <outputs>
+    <data name="table" format="tabular" from_work_dir="napdos/table.tab" label="${tool.name} Table report on ${on_string}"/>
+    <collection name="tree(s)" type="list" label="${tool.name} Tree(s) on ${on_string}">
+      <discover_datasets pattern="(?P&lt;name&gt;.+)\.svg" directory="napdos" ext="svg"/>
+    </collection>
+  </outputs>
+
+
+  <tests>
+    <!-- protein sequence with default params -->
+    <test>
+      <param name="fasta" value="in_proteic.fasta" ftype="fasta" />
+      <output name="table" file="out_table.tab" compare="diff"/>
+      <output_collection name="tree(s)" type="list" count="1" />
+      <assert_command>
+	<has_text text="--domain_type C" />
+	<has_text text="--query_type aa" />
+	<has_text text="--ks_hmm_evalue 1e-5" />
+	<has_text text="--ks_min_matchlength 200" />
+	<has_text text="--c_hmm_evalue 1e-5" />
+	<has_text text="--c_min_matchlength 200" />
+	<has_text text="--path_blast_evalue 1e-5" />
+	<has_text text="--max_hits 1" />
+      </assert_command>
+    </test>
+
+    <!-- protein sequence with custom params -->
+    <test> <!-- expect_failure="true"> -->
+      <param name="fasta" value="in_proteic.fasta" ftype="fasta" />
+      <param name="ks_hmm_evalue_cutoff" value="1e-3"/>
+      <param name="ks_minimum_match_length" value="150"/>
+      <param name="c_hmm_evalue_cutoff" value="1e-1"/>
+      <param name="c_minimum_match_length" value="400"/>
+      <param name="blastp_evalue_cutoff" value="1"/>
+      <param name="max_db_hits_per_domain" value="3"/>
+      <assert_command>
+	<has_text text="--domain_type C" />
+	<has_text text="--query_type aa" />
+	<has_text text="--ks_hmm_evalue 1e-3" />
+	<has_text text="--ks_min_matchlength 150" />
+	<has_text text="--c_hmm_evalue 1e-1" />
+	<has_text text="--c_min_matchlength 400" />
+	<has_text text="--path_blast_evalue 1" />
+	<has_text text="--max_hits 3" />
+      </assert_command>
+    </test>
+    <!-- protein sequences from antismash -->
+    <test>
+      <param name="fasta" value="in_proteic_antismash.fasta" ftype="fasta" />
+      <output_collection name="tree(s)" type="list" count="6" />
+    </test>
+
+      <!-- <assert_stderr> -->
+      <!-- 	<has_text text="Wait a minute" /> -->
+      <!-- </assert_stderr> -->
+  </tests>
+
+  <help><![CDATA[
+Natural Product Domain Seeker
+-----------------------------
+
+NaPDos is a bioinformatic tool for the rapid detection and analysis of secondary metabolite genes. This tool is designed to detect and extract C- and KS- domains from DNA or amino acid sequence data, including PCR amplicon products, individual genes, whole genomes, and metagenomic data sets.
+
+Candidate secondary metabolite domains are identified by sequence comparison to a broad set of manually curated reference genes from well-characterized chemical pathways. Candidate gene sequences are extracted, trimmed, translated (if necessary) and subjected to domain-specific phylogenetic clustering to predict what their putative products might be, and to determine whether these products are likely to produce compounds similar to or different from previously known biosynthetic pathways. If you find this tool helpful, please cite the reference below.
+  ]]></help>
+  <citations>
+    <citation type="doi">10.1371/journal.pone.0034064</citation>
+  </citations>
+
+</tool>

@@ -1,0 +1,5 @@
+	Query id	Database match id	percent identity	align length	e-value	pathway product	domain class	
+ 	gi|2982194|gb|AAC06346.1|	bacit1_C4E	100	456	0.0	bacitracin	epim
+ 	gi|2982194|gb|AAC06346.1|	bacit1_C4E	24	282	1e-11	bacitracin	epim
+ 	gi|2982194|gb|AAC06346.1|	bacit1_C4E	22	409	2e-06	bacitracin	epim
+

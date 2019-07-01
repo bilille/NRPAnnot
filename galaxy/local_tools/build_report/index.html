@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <title>NRPS report</title>
+    <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
+
+    <script src="js/d3.v2.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="geneclusters_updated.js"></script>
+    <script src="js/draw_report.js"></script>
+  </head>
+  <body>
+
+
+    <div id="upper"></div>
+ </div>
+
+    <div id="middle">
+      <div id="cluster-summary"> </div>
+      <div id="cluster-details"> </div>
+    </div>
+    <div id="lower"> </div>
+    <script type="text/javascript">
+      draw_overall_menu(Object.keys(details_data));
+    </script>
+  </body>
+</html>

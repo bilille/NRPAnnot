@@ -1,0 +1,4 @@
+sequence-id	8A-signature	stachelhaus-code	3class-pred	large-class-pred	small-class-pred	single-class-pred	nearest stachelhaus code	NRPS1pred-large-class-pred	NRPS2pred-large-class-pred	outside applicability domain?	coords	pfam-score
+1	FWATFDLAVYEANTNVAGECNLYGPSETTTYSSW	DLYNNALTYK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	gly,ala	ala	ala	gly,ala,val,leu,ile,abu,iva	gly,ala	0	0:0	0.000000e+00
+2	FWATFDLAVYEANTNVAGECNLYGPSETTTYSSW	DLYNNALTYK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	gly,ala	ala	ala	gly,ala,val,leu,ile,abu,iva	gly,ala	0	0:0	0.000000e+00
+3	LNNSFDASTLDAWMIVGGDLNGYGPTEATTFSAT	DALWIGGTFK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	val	val	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	0	0:0	0.000000e+00

@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<tool id="nrps_predictor" name="NRPSpredictor" version="2.0.0">
+  <description>Prediction of A-domain specificity</description>
+  <requirements>
+    <requirement type="package" version="8">openjdk</requirement>
+  </requirements>
+
+  <command detect_errors="exit_code"><![CDATA[
+  #if str($input_format.input_type_selector) == 'fasta':
+    #set $use_signatures = 0
+  #end if
+  #if str($input_format.input_type_selector) == 'signature':
+    #set $use_signatures = 1
+  #end if
+  cd $__tool_directory__/nrps_predictor/ &&
+  ./runNRPSpredictor2.sh -i "$input_file" -r "$report_file" -s $use_signatures &&
+  sed -i 's/#//g' "$report_file" &&
+  sed -i 's/<tab>/	/g' "$report_file"
+  ]]></command>
+  <inputs>
+    <conditional name="input_format">
+      <param name="input_type_selector" type="select" label="Choose the input type">
+        <option value="fasta" selected="True">Fasta file</option>
+        <option value="signature">Signature file</option>
+      </param>
+      <when value="fasta">
+        <param name="input_file" format="fasta" type="data" label="Input file"/>
+      </when>
+      <when value="signature">
+        <param name="input_file" format="txt" type="data" label="Input file"/>
+      </when>
+    </conditional>
+  </inputs>
+
+  <outputs>
+    <data name="report_file" format="tabular" label="${tool.name} tabular report on ${on_string}"/>
+  </outputs>
+  
+  <tests>
+    <!-- fasta file -->
+    <test>
+      <param name="input_file" value="example.fa" ftype="fasta" />
+      <output name="report_file" file="fasta_report.txt" compare="diff"/>
+      <assert_command>
+	<has_text text="-s 0" />
+      </assert_command>
+    </test>
+
+    <!-- signatures file -->
+    <test>
+      <param name="input_file" value="examples.sig" ftype="txt" />
+      <param name="input_type_selector" value="signature" />
+      <output name="report_file" file="signatures_report.txt" compare="diff"/>
+      <assert_command>
+	<has_text text="-s 1" />
+      </assert_command>
+    </test>
+  </tests>
+
+  <help><![CDATA[
+The products of many bacterial non-ribosomal peptide synthetases (NRPS) are highly important secondary metabolites, including vancomycin and other antibiotics. The ability to predict substrate specificity of newly detected NRPS Adenylation (A-) domains by genome sequencing efforts is of great importance to identify and annotate new gene clusters that produce secondary metabolites.
+We present an improved predictor, based on previous work (NRPSpredictor), that predicts A-domain specificity using Support Vector Machines on four hierarchical levels, ranging from gross physicochemical properties of an A-domain’s substrates down to single amino acid substrates.
+
+]]></help>
+
+  <citations>
+    <citation type="doi">10.1093/nar/gki885</citation>
+    <citation type="doi">10.1093/nar/gkr323</citation>
+  </citations>
+
+</tool>

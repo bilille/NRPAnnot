@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<tool id="fetch_from_ncbi" name="FetchFromNCBI" version="0.0.1">
+  <description>Fetch sequence from accession number of desired file</description>
+  <requirements>
+    <requirement type="package" version="2.7">python</requirement>
+    <requirement type="package" version="2.18.4">requests</requirement>
+  </requirements>
+
+  <command detect_errors="exit_code"><![CDATA[
+  $__tool_directory__/fetch_from_ncbi.py --accession $accession --output . --sequence_type $sequence_type &&
+  mv "sequence" "$out_sequence"
+  ]]></command>
+
+  <inputs>
+    <param name="accession" type="text" label="NCBI accession (ex: Y16952)" />
+    <param name="sequence_type" type="select" label="Desired sequence type">
+      <option value="nucleic" selected="True">Nucleic</option>
+      <option value="protein">Protein</option>
+    </param>
+  </inputs>
+
+  <outputs>
+    <data format="fasta" name="out_sequence" label="${tool.name} with accession: ${accession}">
+      <change_format>
+        <when input="sequence_type" value="nucleic" format="genbank" />
+      </change_format>
+    </data>
+</outputs>
+
+<tests>
+  <!-- protein sequence -->
+  <test expect_failure="false" expect_exit_code="0">
+    <param name="sequence_type" value="protein" />
+    <param name="accession" value="ADJ56352.1,ADJ56353.1"/>
+    <assert_command>
+      <has_text text="--sequence_type protein" />
+      <has_text text="--accession ADJ56352.1,ADJ56353.1" />
+    </assert_command>
+  </test>
+
+  <!-- nucleic sequence -->
+  <test expect_failure="false" expect_exit_code="0">
+    <param name="sequence_type" value="nucleic" />
+    <param name="accession" value="Y16952"/>
+    <assert_command>
+      <has_text text="--sequence_type nucleic" />
+      <has_text text="--accession Y16952" />
+    </assert_command>
+  </test>
+
+  </tests>
+
+  <help><![CDATA[
+  This utility is designed to works with antiSMASH3.
+  It has the same behavior of the download method from antiSMASH3.
+  If a nucleic sequence is requested, a GENBANK file will be produced.
+  If a protein sequence is requested, a FASTA file will be produced.
+  ]]></help>
+</tool>

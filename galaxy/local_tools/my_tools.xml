@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<toolbox monitor="true">
+    <section id="nrp" name="Non-ribosomal peptides">
+      <tool file="/local_tools/antismash/antismash.xml" />
+      <tool file="/local_tools/napdos/napdos.xml" />
+      <tool file="/local_tools/nrps_predictor/nrps_predictor.xml" />
+      <tool file="/local_tools/extract_domains/extract_domains.xml" />
+      <tool file="/local_tools/build_report/build_report.xml" />
+      <tool file="/local_tools/fetch_from_ncbi/fetch_from_ncbi.xml" />
+    </section>
+</toolbox>

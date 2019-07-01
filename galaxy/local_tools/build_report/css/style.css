@@ -1,0 +1,134 @@
+html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    background-color: #F5F5F5;
+    display: flex;
+    flex-flow: column;
+}
+
+.content {
+    white-space: nowrap;
+    padding-left: 16px;
+    padding-top: 10px;
+    padding-right: 16px;
+}
+
+#upper, #middle {
+    overflow:scroll;
+}
+
+#upper {
+    height: 185px;
+    min-height: 185px;
+}
+
+#middle {
+    display: flex;
+    bottom: 0;
+    height: 195px;
+    min-height: 195px;
+    white-space: nowrap;
+}
+
+#lower {
+    flex: 1 1 auto;
+    overflow: scroll;
+}
+
+.orf {
+    display: inline-block;
+    margin-right: 30px;
+}
+
+.cluster-buttn {
+    display: inline-block;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+
+.cluster-buttn:hover {
+    background-color: #38983C;
+}
+
+.cluster-buttn.active {
+    background-color: #38983C;
+}
+
+.panel-primary {
+    border-color: #4CAF50;
+}
+
+.panel-primary > .panel-heading {
+    background-color: #4CAF50;
+}
+
+.word-wrap {
+    /* word-break: break-all; */
+    /* word-wrap: break-word; */
+    white-space: normal;
+}
+
+table {
+    font-size: small;
+    background-color: white;
+}
+
+th, td {
+    text-align: center;
+}
+
+.half {
+    width: 50%;
+}
+
+.btn {
+    margin-left: 5px;
+}
+
+textarea {
+    width: 100%;
+    resize: none;
+    font-family: monospace;
+}
+
+.orf:hover .orf-label {
+    font-weight: bold;
+}
+
+.domain:hover text, .domain.active text {
+    font-weight: bold;
+}
+
+.domain:hover rect, .domain.active rect {
+    stroke-width: 2px
+}
+
+/* Swap button */
+#btn-direction {
+    position: absolute;
+    top: 5px;
+    right: 20px;
+}
+
+.footer {
+    min-height: 30px;
+}
+
+#clipboard:hover{
+    background-color: darkgrey;
+}
+
+#clipboard:active{
+    background-color: grey;
+}

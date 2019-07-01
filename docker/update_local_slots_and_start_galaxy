@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo "Number of cpu: $(nproc)"
+echo "Update local_slots in job_conf.xml"
+sed -i "s|id=\"local_slots\">4</param>|id=\"local_slots\">$(nproc)</param>|" /etc/galaxy/job_conf.xml
+
+echo "Start Galaxy"
+/usr/bin/startup
+

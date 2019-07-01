@@ -1,0 +1,248 @@
+<?xml version="1.0"?>
+<tool id="antismash" name="antiSMASH" version="3.0.5">
+  <description>Secondary Metabolite and Antibiotics Analysis</description>
+  <requirements>
+    <container type="docker">antismash/standalone:3.0.5-2</container>
+  </requirements>
+  <command detect_errors="exit_code"><![CDATA[
+  #import os
+  ## antismash needs proper file extension (.gi/.embl/.fa and not .dat)
+  #if str($input_type.type_selector) == 'nucl':
+    #set $seqfile = $input_type.seqfile
+
+    #if $seqfile.is_of_type('genbank'):
+      #set $file_extension = 'gb'
+    #else:
+      #if $seqfile.is_of_type('embl')
+        #set $file_extension = 'embl'
+      #end if
+      #if $seqfile.is_of_type('fasta')
+        #set $file_extension = 'fa'
+      #end if
+    #end if
+  #else
+    #set $seqfile = $input_type.seqfile
+    #set $file_extension = 'fa'
+  #end if
+
+  ln -f "${seqfile}" "input_sequence.${file_extension}";
+  $__tool_directory__/run_antismash "input_sequence.${file_extension}" "$html.files_path" \
+    --cpus \${GALAXY_SLOTS:-2}
+    --logfile /output/input_sequence/antismash.log
+    --input-type $input_type.type_selector
+    --verbose
+    --genefinding prodigal
+    --limit -1
+    #if str($input_type.type_selector) == 'nucl':
+      --all-orfs
+    #end if
+
+    #if str($input_type.type_selector) == 'nucl'
+      #if $input_type.prediction_limit.from:
+        --from $input_type.prediction_limit.from
+      #end if
+      #if $input_type.prediction_limit.to:
+        --to $input_type.prediction_limit.to
+      #end if
+
+      $input_type.cluster_finder.cluster_finder
+      #if $input_type.cluster_finder.cluster_finder:
+        --cf_cdsnr $input_type.cluster_finder.minimum_cluster_size
+        --cf_npfams $input_type.cluster_finder.minimum_number_pfam_domains
+        --cf_threshold $input_type.cluster_finder.minimum_clusterfinder_prob
+      #end if
+
+      $input_type.eukaryotic_origins
+
+      $input_type.blast_comparaison.clusterblast
+      $input_type.blast_comparaison.known_clusterblast
+      $input_type.blast_comparaison.sub_clusterblast
+
+      $input_type.optional_analysis.whole_pfam
+      $input_type.optional_analysis.enzyme_commission
+      ##if str($input_type.optional_analysis.homology_selector) != "none":
+      ## --modeling $input_type.optional_analysis.homology_selector
+      ##end if
+
+    #end if
+
+    $input_type.additional_annotations.smcogs
+    $input_type.additional_annotations.active_site_finder
+
+    ## shuffling files to create the correct outputs for Galaxy
+    &&
+    mv #echo os.path.join($html.files_path, 'input_sequence', '*')# "$html.files_path"
+    &&
+    rmdir #echo os.path.join($html.files_path, 'input_sequence')#
+    ## convert js to json
+    &&
+    $__tool_directory__/geneclusters2json.py --run_id "$run_id" --geneclusters #echo os.path.join($html.files_path, 'geneclusters.js')# --json_out "$json"
+    &&
+    $__tool_directory__/nrpspredictor_export.py --nrps_dir #echo os.path.join($html.files_path, 'nrpspks_predictions_txt')# --geneclusters "$json" --tsv_out "$nrpspredictor"
+    &&
+    cp #echo os.path.join($html.files_path, 'index.html')# "$html"
+  ]]></command>
+  <inputs>
+    <param name="run_id" type="text" label="antiSMASH run ID" value="My antiSMASH run ID" />
+    <!-- input type (nucleic/protein) -->
+    <conditional name="input_type">
+      <param name="type_selector" type="select" label="Choose the sequence type">
+        <option value="nucl" selected="True">Nucleic</option>
+        <option value="prot">Protein</option>
+      </param>
+
+      <!-- protein type -->
+      <when value="prot">
+	<param name="seqfile" format="fasta" type="data" label="Input file"/>
+	<section name="additional_annotations" title="Additional annotations" expanded="True">
+	  <param name="smcogs" label="smCOG analysis for functional prediction and phylogenetic analysis of genes" type="boolean" truevalue="--smcogs" falsevalue="" checked="True"/>
+	  <param name="active_site_finder" label="Active site finder" type="boolean" truevalue="--asf" falsevalue="" checked="True"/>
+	</section>
+      </when>
+
+      <!-- nucleic type -->
+      <when value="nucl">
+	<!-- input sequence format (genbank/embl/fasta format -->
+        <param name="seqfile" format="genbank,embl,fasta" type="data" label="Input file"/>
+
+	<section name="prediction_limit" title="Limit prediction to an input region (ignored for multi-sequence records)" expanded="False">
+	  <param name="from" argument="--from" label="Start at" type="integer" optional="True"/>
+	  <param name="to" argument="--to" label="Stop at" type="integer" optional="True"/>
+	</section>
+
+	<section name="cluster_finder" title="Detect putative gene clusters using the ClusterFinder algorithm" expanded="False">
+	  <param name="cluster_finder" label="Enable ClusterFinder algorithm" type="boolean" truevalue="--inclusive" falsevalue="" checked="False" help="The following parameters will be used only if cluster finder algorithm is enabled"/>
+	  <param name="minimum_cluster_size" argument="--cf_cdsnr" label="Minimum cluster size in CDS" type="integer" value="5"/>
+	  <param name="minimum_number_pfam_domains" argument="--cf_npfams" label="Minimum number of biosynthesis-related PFAM domains" type="integer" value="5"/>
+	  <param name="minimum_clusterfinder_prob" argument="--cf_threshold" label="Minimum ClusterFinder probability" type="float" value="0.6"/>
+	</section>
+
+	<param name="eukaryotic_origins" label="DNA of Eukaryotic origin" type="boolean" truevalue="--eukaryotic" falsevalue="" checked="False"/>
+
+	<section name="blast_comparaison" title="BLAST comparisons to other gene clusters" expanded="True">
+	  <param name="clusterblast" label="Gene Cluster Blast analysis" type="boolean" truevalue="--clusterblast" falsevalue="" checked="True"/>
+	  <param name="known_clusterblast" label="Known Gene Cluster Blast analysis" type="boolean" truevalue="--knownclusterblast" falsevalue="" checked="True"/>
+	  <param name="sub_clusterblast" label="Subcluster Blast analysis" type="boolean" truevalue="--subclusterblast" falsevalue="" checked="True"/>
+	</section>
+
+	<section name="additional_annotations" title="Additional annotations" expanded="True">
+	  <param name="smcogs" label="smCOG analysis for functional prediction and phylogenetic analysis of genes" type="boolean" truevalue="--smcogs" falsevalue="" checked="True"/>
+	  <param name="active_site_finder" label="Active site finder" type="boolean" truevalue="--asf" falsevalue="" checked="True"/>
+	</section>
+
+	<section name="optional_analysis" title="Optional analyses with a long runtime" expanded="False">
+	  <param name="whole_pfam" label="Whole-genome PFAM analysis" type="boolean" truevalue="--full-hmmer" falsevalue="" checked="False"/>
+	  <param name="enzyme_commission" label="Enzyme Commission (EC) number prediction (very long runtime)" type="boolean" truevalue="--ecpred eficaz" falsevalue="" checked="False"/>
+	  <!-- <param name="homology_selector" type="select" label="Homology based metabolic modeling pipeline against template model"> -->
+          <!--   <option value="none" selected="True">none</option> -->
+          <!--   <option value="eco">E. coli</option> -->
+          <!--   <option value="sco">S. coelicolor</option> -->
+	  <!-- </param> -->
+	</section>
+      </when>
+    </conditional>
+  </inputs>
+
+  <outputs>
+    <!-- <data format="tar" name="archive" label="Archive (all files compressed)" /> -->
+    <data format="html" name="html" label="${tool.name} HTML report on ${on_string}" />
+    <data format="json" name="json" label="${tool.name} geneclusters JSON report on ${on_string}" />
+    <data format="tabular" name="nrpspredictor" label="${tool.name} NRPSPredictor2 results" />
+  </outputs>
+
+  <tests>
+    <!-- protein sequence with default params -->
+    <test>
+      <param name="run_id" value="My Run ID" />
+      <param name="type_selector" value="prot" />
+      <param name="seqfile" value="in_proteic.fasta" ftype="fasta" />
+      <output name="json" file="out_proteic_fasta.json" compare="diff" />
+
+      <assert_command>
+	<has_text text="--input-type prot" />
+	<not_has_text text="--all-orfs" />
+	<not_has_text text="--from" />
+	<not_has_text text="--to" />
+	<not_has_text text="--inclusive" />
+	<not_has_text text="--cf_cdsnr" />
+	<not_has_text text="--cf_npfams" />
+	<not_has_text text="--cf_threshold" />
+	<not_has_text text="--eukaryotic" />
+	<not_has_text text="--clusterblast" />
+	<not_has_text text="--knownclusterblast" />
+	<not_has_text text="--subclusterblast" />
+	<has_text text="--smcogs" />
+	<has_text text="--asf" />
+	<not_has_text text="--full-hmmer" />
+	<not_has_text text="--ecpred efficaz" />
+      </assert_command>
+
+    </test>
+    <!-- nucleic sequence (genbank) with default params -->
+    <test>
+      <param name="run_id" value="My Run ID" />
+      <param name="seqfile" value="in_nucleic.gb" ftype="genbank" />
+      <output name="json" file="out_nucleic_genbank.json" compare="diff" />
+      <assert_command>
+	<has_text text="--input-type nucl" />
+	<has_text text="--all-orfs" />
+	<not_has_text text="--from" />
+	<not_has_text text="--to" />
+	<not_has_text text="--inclusive" />
+	<not_has_text text="--cf_cdsnr" />
+	<not_has_text text="--cf_npfams" />
+	<not_has_text text="--cf_threshold" />
+	<not_has_text text="--eukaryotic" />
+	<has_text text="--clusterblast" />
+	<has_text text="--knownclusterblast" />
+	<has_text text="--subclusterblast" />
+	<has_text text="--smcogs" />
+	<has_text text="--asf" />
+	<not_has_text text="--full-hmmer" />
+	<not_has_text text="--ecpred efficaz" />
+      </assert_command>
+    </test>
+  </tests>
+  <help><![CDATA[
+
+antiSMASH 3 includes a number of new features that aid researchers in identifying interesting secondary metabolite gene clusters:
+
+* Most similar known gene cluster, a curated database of known gene clusters that identified clusters are compared against.
+* Active Site Finder, a novel prediction algorithm that identifies conserved active site residues in protein domains
+* Enzyme Commission (EC) number predition
+* Homology based metabolic modeling
+* Updated and extended the cluster identification profiles, especiall for ribosomally synthesised peptide products (RiPPs).
+
+Introduction
+------------
+The secondary metabolism of bacteria and fungi constitutes a rich source of bioactive compounds of potential pharmaceutical value, comprising biosynthetic pathways of many chemicals that have been and are being utilized as e.g. antibiotics, cholesterol-lowering drugs or antitumor drugs.
+
+Interestingly, the genes encoding the biosynthetic pathway responsible for the production of such a secondary metabolite are very often spatially clustered together at a certain position on the chromosome; such a compendium of genes is referred to as a 'secondary metabolite biosynthesis gene cluster'.
+
+This genetic architecture has opened up the possibility for straightforward detection of secondary metabolite biosynthesis pathways by locating their gene clusters. In recent years, the costs of sequencing bacterial and fungi has dropped dramatically, and many genome sequences have become available. Based on `profile hidden <http://www.ncbi.nlm.nih.gov/pubmed/9918945>`_ Markov models of genes that are specific for certain types of gene clusters, antiSMASH is able to accurately identify the gene clusters encoding secondary metabolites of all known broad chemical classes.
+antiSMASH not only detects the gene clusters, but also offers detailed sequence analysis.
+
+antiSMASH input parameters
+--------------------------
+
+The ideal input for antiSMASH is an annotated nucleotide file in `Genbank format <http://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html>`_ or `EMBL format <http://www.ebi.ac.uk/help/formats.html#EMBL>`_ . You can either upload a GenBank/EMBL file manually, or simply enter the GenBank/RefSeq accession number of your sequence for antiSMASH to upload it. If no annotation is available, we recommend running your sequence through an annotation pipeline like `RAST <http://rast.nmpdr.org/>`_ to obtain GBK/EMBL files with high-quality annotations.
+
+Alternatively, you can provide a FASTA file containing a single sequence. antiSMASH will generate a preliminary annotation using Glimmer3, and use that to run the rest of the analysis. Multi-sequence FASTA files should be split into single FASTA files before running. When a prokaryotic FASTA file is provided, you will be able to input settings for Glimmer3 gene prediction: GenBank translation table (genetic code), minimal gene length (smallest genes allowed) and genome configuration (circular/linear chromosome or plasmid).
+
+Input files should be properly formatted. If you are creating your GBK/EMBL/FASTA file manually, be sure to do so in a plain text editor like Notepad or Emacs, and saving your files as "All files (*.*)", ending with the correct extension (for example ".fasta", ".gbk", or ".embl".
+
+There are several optional analyses that may or may not be run on your sequence.
+Highly recommended is the Gene Cluster Blast Comparative Analysis, which runs BlastP using each amino acid sequence from a detected gene cluster as a query on a large database of predicted protein sequences from secondary metabolite biosynthetic gene clusters, and pools the results to identify the gene clusters that are most homologous to the gene cluster that was detected in your query nucleotide sequence.
+This analysis is selected by default
+
+Also available is the analysis of secondary metabolism gene families (smCOGs). This analysis attempts to allocate each gene in the detected gene clusters to a secondary metabolism-specific gene family using profile hidden Markov models specific for the conserved sequence region characteristic of this family. Additionally, a phylogenetic tree is constructed of each gene together with the (max. 100) sequences of the smCOG seed alignment.
+This analysis is selected by default
+
+For the most thorough genome analysis, we provide genome-wide PFAM HMM analysis of all genes in the genome through modules of the `CLUSEAN pipeline <https://bitbucket.org/antismash/clusean>`_. Of course, some regions important to secondary metabolism may have been missed in the gene cluster identification stage (e.g. because they represent the biosynthetic pathway of a yet unknown secondary metabolite). Therefore, when genome-wide PFAM HMM analysis is selected, the PFAM frequencies are also used to find all genome regions in which PFAM domains typical for secondary metabolism are overrepresented.
+The whole genome PFAM HMM analysis is selected by default.
+
+  ]]></help>
+  <citations>
+    <citation type="doi">10.1093/nar/gkv437</citation>
+  </citations>
+</tool>
